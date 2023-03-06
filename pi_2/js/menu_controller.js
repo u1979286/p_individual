@@ -8,6 +8,8 @@ function exit (){
 		alert("Leaving " + name + "'s game");
 	}
 	name = "";
+	loadpage("../index.html");
+
 }
 
 function options(){
