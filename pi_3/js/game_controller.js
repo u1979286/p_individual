@@ -2,6 +2,26 @@ const back = "../resources/back.png";
 const items = ["../resources/cb.png","../resources/co.png","../resources/sb.png",
 "../resources/so.png","../resources/tb.png","../resources/to.png"];
 var girar = false;
+var temps = 1000;
+var dif = 20;
+
+function dificultat() {
+	var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"hard"}';
+	var options_data = JSON.parse(json);
+	console.log(json);
+	if (options_data.dificulty === "easy"){
+		dif = 30;
+		temps = 2000;
+	}
+	else if (options_data.dificulty === "normal"){
+		dif = 20;
+		temps = 1000;
+	}
+	else if (options_data.dificulty === "hard"){
+		dif = 10;
+		temps = 500;
+	}
+}
 var game = new Vue({
 	el: "#game_id",
 	data: {
