@@ -10,7 +10,7 @@ function dificultat() {
 	var options_data = JSON.parse(json);
 	console.log(json);
 	if (options_data.dificulty === "easy"){
-		dif = 30;
+		dif = 10;
 		temps = 2000;
 	}
 	else if (options_data.dificulty === "normal"){
@@ -18,7 +18,7 @@ function dificultat() {
 		temps = 1000;
 	}
 	else if (options_data.dificulty === "hard"){
-		dif = 10;
+		dif = 30;
 		temps = 500;
 	}
 }
