@@ -50,7 +50,7 @@ var game = new Vue({
 			for (var i = 0; i < this.items.length; i++){
 				Vue.set(this.current_card, i, {done: false, texture: back});
 			}
-		},1000);
+		},temps);
 	},	
 	methods: {
 		clickCard: function(i){
@@ -89,7 +89,7 @@ var game = new Vue({
 	},
 	computed: {
 		score_text: function(){
-			return 100 - this.bad_clicks * 20;
+			return 100 - this.bad_clicks * dif;
 		}
 	}
 });
