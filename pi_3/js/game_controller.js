@@ -45,7 +45,6 @@ var game = new Vue({
 			Vue.set(this.current_card, i, {done: false, texture: this.items[i]});
 		}
 		setTimeout(() => {
-			console.log("Delay for 1 second.");
 			girar = true;
 			for (var i = 0; i < this.items.length; i++){
 				Vue.set(this.current_card, i, {done: false, texture: back});
