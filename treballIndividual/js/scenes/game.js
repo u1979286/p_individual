@@ -5,6 +5,8 @@ class GameScene extends Phaser.Scene {
         this.firstClick = null;
         this.score = 100;
         this.correct = 0;
+        this.temps = 1000;
+        this.dif = 20;
     }
 
     preload() {
@@ -17,25 +19,49 @@ class GameScene extends Phaser.Scene {
         this.load.image('to', '../resources/to.png');
     }
 
-	mostrar(){
-		this.time.delayedCall(10, () => {
-            this.cards.children.iterate((card) => {
-                card.setTexture('front');
-            });
-        });
-
-		this.time.delayedCall(1000, () => {
-			this.cards.children.iterate((card) => {
-				card.setTexture('back');
-			});
-		});
-		
+dificultat() {
+	var json = localStorage.getItem("config") || '{"cards":2,"dificulty":"hard"}';
+	var options_data = JSON.parse(json);
+	this.cards = options_data.cards;
+	console.log(json);
+	if (options_data.dificulty === "easy"){
+		this.dif = 10;
+		this.temps = 2000;
 	}
+	else if (options_data.dificulty === "normal"){
+		this.dif = 20;
+		this.temps = 1000;
+	}
+	else if (options_data.dificulty === "hard"){
+		this.dif = 30;
+		this.temps = 500;
+	}
+}
+
+    mostrar(){
+        this.time.delayedCall(0, () => {
+            if (this.cards !== null) {
+                this.cards.children.iterate((card) => {
+                    card.setTexture('front');
+                });
+            }
+        });
+    
+        this.time.delayedCall(this.temps, () => {
+            if (this.cards !== null) {
+                this.cards.children.iterate((card) => {
+                    card.setTexture('back');
+                });
+            }
+        });
+    }
+
 
     create() {
 
-		this.mostrar();
-		
+        this.dificultat();
+        this.mostrar();
+
         let arraycards = ['co', 'sb', 'co', 'sb'];
         this.cameras.main.setBackgroundColor(0xBFFCFF);
 
@@ -51,34 +77,37 @@ class GameScene extends Phaser.Scene {
         this.cards.create(550, 300, 'back');
 
         let i = 0;
-        this.cards.children.iterate((card) => {
-            card.card_id = arraycards[i];
-            i++;
-            card.setInteractive();
-            card.on('pointerup', () => {
-                card.disableBody(true, true);
-                if (this.firstClick) {
-                    if (this.firstClick.card_id !== card.card_id) {
-                        this.score -= 20;
-                        this.firstClick.enableBody(false, 0, 0, true, true);
-                        card.enableBody(false, 0, 0, true, true);
-                        if (this.score <= 0) {
-                            alert("Game Over");
-                            loadpage("../");
+        this.time.delayedCall(this.temps, () => {
+            this.cards.children.iterate((card) => {
+                card.card_id = arraycards[i];
+                i++;
+                card.setInteractive();
+                card.on('pointerup', () => {
+                    card.disableBody(true, true);
+                    if (this.firstClick) {
+                        if (this.firstClick.card_id !== card.card_id) {
+                            this.score -= this.dif;
+                            this.firstClick.enableBody(false, 0, 0, true, true);
+                            card.enableBody(false, 0, 0, true, true);
+                            if (this.score <= 0) {
+                                alert("Game Over");
+                                loadpage("../");
+                            }
+                        } else {
+                            this.correct++;
+                            if (this.correct >= 2) {
+                                alert("You Win with " + this.score + " points.");
+                                loadpage("../");
+                            }
                         }
+                        this.firstClick = null;
                     } else {
-                        this.correct++;
-                        if (this.correct >= 2) {
-                            alert("You Win with " + this.score + " points.");
-                            loadpage("../");
-                        }
+                        this.firstClick = card;
                     }
-                    this.firstClick = null;
-                } else {
-                    this.firstClick = card;
-                }
-            }, card);
+                }, card);
+            });
         });
+
     }
 
     update() {}
