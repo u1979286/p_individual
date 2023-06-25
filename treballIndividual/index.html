@@ -1,0 +1,21 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<link rel="stylesheet" href="./styles/main.css">
+		<script src="./js/loader.js"></script>
+		<script src="./js/game_info.js"></script>
+		<title> My first game - Menu </title>
+	</head>
+	<body>
+		<div id="menu">
+			<p class="menu-object" id="title">Memory menu</p>
+			<button class="menu-object" v-on:click="phaserGame">Phaser Game</button>
+			<button class="menu-object" v-on:click="scores">Scores</button>
+			<button class="menu-object" v-on:click="loadGame">Load Game</button>
+			<button class="menu-object" v-on:click="options">Options</button>
+			<button class="menu-object" v-on:click="exit">Exit</button>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+	<script src="./js/menu_controller.js"></script>
+</html>
